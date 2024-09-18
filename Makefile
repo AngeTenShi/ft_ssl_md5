@@ -4,10 +4,10 @@ RED			=	\033[0;31m
 CYAN		=	\033[0;36m
 COLOR_OFF	=	\033[0m\0
 YELLOW		=	\033[0;33m
-FLAGS		=	-Wall -Wextra -Werror
+FLAGS		=	#-Wall -Wextra -Werror
 SRCS_DIR	=	./srcs
 OBJS_DIR	=	objs
-SRCS		= main.c list_utils.c utils.c
+SRCS		= main.c list_utils.c utils.c md5.c sha256.c
 
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 
