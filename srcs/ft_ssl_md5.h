@@ -14,7 +14,7 @@ typedef struct string_list {
 } t_string_list;
 
 typedef struct options {
-	int p;
+	int p; // 
 	int q;
 	int r;
 	t_string_list *strings; // for -s option

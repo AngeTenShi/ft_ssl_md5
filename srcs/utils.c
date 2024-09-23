@@ -45,8 +45,8 @@ void parse_options(t_options *options, int ac, char **av)
 					add_string_to_list(&options->strings, ft_strdup(av[i + 1]), 0);
 				else
 					write(2, "Warning : ft_ssl: option requires an argument -- s\n", 51);
+				last_flag = i;
 			}
-			last_flag = i;
 		}
 		// if not a flag and not an argument of flag it's a file
 		else if (last_flag + 1 != i)
