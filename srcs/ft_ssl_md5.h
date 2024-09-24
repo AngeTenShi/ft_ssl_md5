@@ -28,25 +28,26 @@ typedef struct s_hash_function {
 	struct s_hash_function *next;
 } t_hash_function;
 
-void add_function_to_list(t_hash_function **hash_functions, const char *name, hash_function function);
+// libft
 int ft_strlen(const char *str);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
-void parse_options(t_options *options, int ac, char **av);
-void ft_strncpy(char *dst, const char *src, size_t n);
 void ft_memcpy(void *dst, const void *src, size_t n);
-void print_hexa(const char *str, int len);
-void add_string_to_list(t_string_list **list, char *str, int from_file);
-void free_hash_list(t_string_list *list);
 char *ft_strdup(const char *s);
-void	free_function_list(t_hash_function *list);
 
-// md5 operations
-unsigned int F(unsigned int b, unsigned int c, unsigned int d);
-unsigned int G(unsigned int b, unsigned int c, unsigned int d);
-unsigned int H(unsigned int b, unsigned int c, unsigned int d);
-unsigned int I(unsigned int b, unsigned int c, unsigned int d);
-unsigned int leftrotate(unsigned int x, unsigned int c);
+// utils
+void parse_options(t_options *options, int ac, char **av);
+void print_hexa(const char *str, int len);
+
+// list operations
+void add_function_to_list(t_hash_function **hash_functions, const char *name, hash_function function);
+void add_string_to_list(t_string_list **list, char *str, int from_file);
+
+// free
+void free_function_list(t_hash_function *list);
+void free_hash_list(t_string_list *list);
+
+// helpers
 void md5_helper(t_options *options);
 void sha256_helper(t_options *options);
-
+void whirlpool_helper(t_options *options);
 #endif

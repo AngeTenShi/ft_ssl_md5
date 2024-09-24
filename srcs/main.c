@@ -12,7 +12,6 @@ void print_error(const char *error)
 	write(2, error, ft_strlen(error));
 }
 
-
 void execute_function(t_hash_function *hash_functions, const char *command, t_options *options)
 {
 	t_hash_function *current_function;
@@ -53,6 +52,7 @@ int main(int ac, char **av)
 	parse_options(options, ac, av);
 	add_function_to_list(&hash_functions, "md5", md5_helper);
 	add_function_to_list(&hash_functions, "sha256", sha256_helper);
+	add_function_to_list(&hash_functions, "whirlpool", whirlpool_helper);
 	execute_function(hash_functions, av[1], options);
 	free_hash_list(options->strings);
 	free_function_list(hash_functions);

@@ -7,7 +7,7 @@ YELLOW		=	\033[0;33m
 FLAGS		=	-Wall -Wextra -Werror
 SRCS_DIR	=	./srcs
 OBJS_DIR	=	objs
-SRCS		= main.c list_utils.c utils.c md5.c sha256.c
+SRCS		= main.c list_utils.c utils.c md5.c sha256.c whirlpool.c
 
 OBJS		=	$(SRCS:%.c=$(OBJS_DIR)/%.o)
 

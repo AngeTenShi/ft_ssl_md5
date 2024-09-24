@@ -56,18 +56,6 @@ void parse_options(t_options *options, int ac, char **av)
 }
 
 
-void ft_strncpy(char *dst, const char *src, size_t n)
-{
-	size_t i;
-
-	i = 0;
-	while (i < n)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-}
-
 void ft_memcpy(void *dst, const void *src, size_t n)
 {
 	size_t i;
