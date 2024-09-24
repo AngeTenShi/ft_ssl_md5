@@ -167,7 +167,6 @@ void sha256_file(const char *filename, t_options *options)
 				write(1, "-", 1);
 			else
 				write(1, filename, ft_strlen(filename));
-			write(1, "\n", 1);
 		}
 		else
 		{
@@ -177,7 +176,6 @@ void sha256_file(const char *filename, t_options *options)
 				write(1, filename, ft_strlen(filename));
 			write(1, "  ", 2);
 			print_hexa(hash, 32);
-			write(1, "\n", 1);
 		}
 	}
 	else
@@ -203,20 +201,19 @@ void sha256_helper(t_options *options)
 					print_hexa(hash, 32);
 					write(1, "  ", 2);
 					write(1, "-", 1);
-					write(1, "\n", 1);
 				}
 				else
 				{
 					write(1, "-", 1);
 					write(1, "  ", 2);
 					print_hexa(hash, 32);
-					write(1, "\n", 1);
 				}
 			}
 			else
 				print_hexa(hash, 32);
 			free(hash);
 		}
+		write(1, "\n", 1);
 		current = current->next;
 	}
 }
