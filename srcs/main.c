@@ -13,13 +13,6 @@ void print_error(const char *error)
 }
 
 
-void sha256(const char *input, t_options *options)
-{
-	(void)input;
-	(void)options;
-}
-
-
 void execute_function(t_hash_function *hash_functions, const char *command, t_options *options)
 {
 	t_hash_function *current_function;
@@ -42,22 +35,27 @@ int main(int ac, char **av)
 {
 	t_hash_function *hash_functions = NULL;
 	t_options *options = malloc(sizeof(t_options));
+	options->p = 0;
+	options->q = 0;
+	options->r = 0;
+	options->strings = NULL;
 	t_string_list *hash_list = NULL;
-
-	if (ac < 3)
+	if (ac < 2)
 	{
 		print_usage();
 		free(options);
 		free(hash_list);
 		return (1);
 	}
+	if (ac == 2)
+		add_string_to_list(&hash_list, ft_strdup("/dev/stdin"), 1);
 	options->strings = hash_list;
 	parse_options(options, ac, av);
 	add_function_to_list(&hash_functions, "md5", md5_helper);
 	add_function_to_list(&hash_functions, "sha256", sha256_helper);
 	execute_function(hash_functions, av[1], options);
-	free(hash_functions);
-	free_hash_list(hash_list);
+	free_hash_list(options->strings);
+	free_function_list(hash_functions);
 	free(options);
 	return (0);
 }

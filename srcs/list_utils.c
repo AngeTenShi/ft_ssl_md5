@@ -20,3 +20,19 @@ void add_function_to_list(t_hash_function **hash_functions, const char *name, ha
 	new_function->next->function = function;
 	new_function->next->next = NULL;
 }
+
+
+void	free_function_list(t_hash_function *list)
+{
+	t_hash_function *current_node;
+	t_hash_function *next_node;
+
+	current_node = list;
+	while (current_node)
+	{
+		next_node = current_node->next;
+		free(current_node);
+		current_node = next_node;
+	}
+
+}

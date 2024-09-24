@@ -14,7 +14,7 @@ typedef struct string_list {
 } t_string_list;
 
 typedef struct options {
-	int p; // 
+	int p;
 	int q;
 	int r;
 	t_string_list *strings; // for -s option
@@ -34,10 +34,11 @@ int ft_strncmp(const char *s1, const char *s2, size_t n);
 void parse_options(t_options *options, int ac, char **av);
 void ft_strncpy(char *dst, const char *src, size_t n);
 void ft_memcpy(void *dst, const void *src, size_t n);
-void print_hexa(char *str, int len);
+void print_hexa(const char *str, int len);
 void add_string_to_list(t_string_list **list, char *str, int from_file);
 void free_hash_list(t_string_list *list);
 char *ft_strdup(const char *s);
+void	free_function_list(t_hash_function *list);
 
 // md5 operations
 unsigned int F(unsigned int b, unsigned int c, unsigned int d);

@@ -80,20 +80,20 @@ void ft_memcpy(void *dst, const void *src, size_t n)
 	}
 }
 
-void print_hexa(char *str, int len)
+void print_hexa(const char *str, int len)
 {
 	int i = 0;
 	char hex[16] = "0123456789abcdef";
-
+	char dig[2];
+	if (!str)
+		return ;
 	while (i < len)
 	{
-		char dig[2];
 		dig[0] = hex[(str[i] >> 4) & 0xf]; // partie haute
 		dig[1] = hex[str[i] & 0xf]; // partie basse
 		write(1, dig, 2);
 		i++;
 	}
-	write(1, "\n", 1);
 }
 
 void add_string_to_list(t_string_list **list, char *str, int from_file)

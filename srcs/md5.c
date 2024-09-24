@@ -30,7 +30,7 @@ unsigned int leftrotate(unsigned int x, unsigned int c) // wikipedia def
 	return ((x << c) | (x >> (32 - c)));
 }
 
-char *process_block(size_t len, const char *input, unsigned int *r, unsigned int *k)
+char *process_block_md5(size_t len, const char *input, unsigned int *r, unsigned int *k)
 {
 	char *msg = (char *)malloc(len);
 	ft_memcpy(msg, input, len);
@@ -82,6 +82,7 @@ char *md5(const char *input, size_t len, size_t total_size) {
 							4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
 							6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21 };
 	unsigned int k[64];
+	char *hash = NULL;
 	for (int i = 0; i < 64; i++)
 		k[i] = (unsigned int)(fabs(sin(i + 1)) * pow(2, 32));
 	if (len == 0)
@@ -99,9 +100,27 @@ char *md5(const char *input, size_t len, size_t total_size) {
 			msg[i] = 0;  // ajout de 0 après le bit 1
 		unsigned long long bit_len = total_size * 8;
 		ft_memcpy(msg + new_len - 8, &bit_len, 8);
-		return (process_block(new_len, msg, r, k));
+		char *orig_msg = msg;
+		while (new_len >= 64)
+		{
+			if (hash)
+				free(hash);
+			hash = process_block_md5(64, msg, r, k);
+			msg += 64;
+			new_len -= 64;
+		}
+		free(orig_msg);
+		return (hash);
 	}
-	return (process_block(len, input, r, k));
+	while (len >= 64)
+	{
+		if (hash)
+			free(hash);
+		hash = process_block_md5(64, input, r, k);
+		input += 64;
+		len -= 64;
+	}
+	return (hash);
 }
 
 void md5_file(const char *filename, t_options *options)
@@ -111,7 +130,7 @@ void md5_file(const char *filename, t_options *options)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		perror("open");
+		perror(filename);
 		return;
 	}
 	char buffer[1024];
@@ -137,29 +156,32 @@ void md5_file(const char *filename, t_options *options)
 			free(hash);
 		hash = md5(buffer, bytes_read, total_size);
 	}
-	// manage options
 	if (options->q == 0)
 	{
 		if (options->r == 0)
 		{
-			write(1, "MD5 (", 5);
-			write(1, filename, ft_strlen(filename));
-			write(1, ") = ", 4);
-		}
-		print_hexa(hash, 16);
-		if (options->r == 1)
-		{
-			write(1, " ", 1);
-			write(1, filename, ft_strlen(filename));
+			print_hexa(hash, 16);
+			write(1, "  ", 2);
+			if (ft_strncmp(filename, "/dev/stdin", 10) == 0)
+				write(1, "-", 1);
+			else
+				write(1, filename, ft_strlen(filename));
 			write(1, "\n", 1);
 		}
 		else
 		{
+			if (ft_strncmp(filename, "/dev/stdin", 10) == 0)
+				write(1, "-", 1);
+			else
+				write(1, filename, ft_strlen(filename));
+			write(1, "  ", 2);
+			print_hexa(hash, 16);
 			write(1, "\n", 1);
 		}
 	}
 	else
 		print_hexa(hash, 16);
+	free(hash);
 	close(fd);
 }
 
@@ -167,6 +189,8 @@ void md5_helper(t_options *options)
 {
 	t_string_list *current_string;
 
+	if (options->p)
+		md5_file("/dev/stdin", options);
 	current_string = options->strings;
 	while (current_string)
 	{
@@ -180,19 +204,16 @@ void md5_helper(t_options *options)
 			{
 				if (options->r == 0)
 				{
-					write(1, "MD5 (\"", 6);
-					write(1, current_string->str, ft_strlen(current_string->str));
-					write(1, "\") = ", 5);
-				}
-				print_hexa(hash, 16);
-				if (options->r == 1)
-				{
-					write(1, " \"", 2);
-					write(1, current_string->str, ft_strlen(current_string->str));
-					write(1, "\"\n", 2);
+					print_hexa(hash, 16);
+					write(1, "  ", 3);
+					write(1, "-", 1);
+					write(1, "\n", 1);
 				}
 				else
 				{
+					write(1, "-", 1);
+					write(1, "  ", 3);
+					print_hexa(hash, 16);
 					write(1, "\n", 1);
 				}
 			}
